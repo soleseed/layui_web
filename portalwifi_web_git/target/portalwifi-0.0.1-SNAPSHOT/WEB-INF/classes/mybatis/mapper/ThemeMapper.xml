@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hansuo.portalwifi.mapper.ThemeDao">
+	
+	<select id="search" parameterType="hansuo.portalwifi.entity.Theme" resultType="hansuo.portalwifi.entity.Theme">
+		SELECT 
+			*
+  		FROM 
+  			theme
+		WHERE
+			1=1 
+		<if test="name != null and name != ''">
+			AND name like CONCAT('%', #{name}, '%')
+		</if>
+		<if test="module != null and module != ''">
+			AND module like CONCAT('%', #{module}, '%')
+		</if>	
+		<if test="routeBegin != null and routeBegin != ''">
+			AND routeBegin like CONCAT('%', #{routeBegin}, '%')
+		</if>
+		<if test="routeEnd != null and routeEnd != ''">
+			AND routeEnd like CONCAT('%', #{routeEnd}, '%')
+		</if>
+  		order by
+  			updateTime Desc
+	</select>
+	
+	<insert id="insert" parameterType="hansuo.portalwifi.entity.Theme">
+		insert into
+			theme
+		(id,
+		 name,
+		 module,
+		 updateTime,
+		 routeBegin,
+		 routeEnd
+		)values(
+		 null,
+		 #{name},
+		 #{module},
+		 #{updateTime},
+		 #{routeBegin},
+		 #{routeEnd}
+		)
+	</insert>
+	
+	<delete id="delete" parameterType="java.lang.String">
+		delete from
+			theme
+		where
+			id= #{id}
+	</delete>
+	
+	<update id="update" parameterType="hansuo.portalwifi.entity.Theme">
+		update 
+			theme
+		<set>
+            <if test="name != null and name != '' ">
+            	name=#{name},
+            </if>
+            <if test="module != null and module != '' ">
+            	module=#{module},
+            </if>
+            <if test="routeBegin != null and routeBegin != '' ">
+            	routeBegin=#{routeBegin},
+            </if>
+            <if test="routeEnd != null and routeEnd != '' ">
+            	routeEnd=#{routeEnd},
+            </if>
+            <if test="updateTime != null">
+            	updateTime=#{updateTime},
+            </if>
+        </set>
+       where 
+       		id =#{id}
+	</update>
+	
+</mapper>
